@@ -2,6 +2,7 @@ import express from "express"
 import routerUser from "./routers/user";
 import routerRole from "./routers/role";
 import routerTipo_Dni from "./routers/tipo_dni";
+import  authRouters  from "./routers/auth.router";
 import db from "./config/db"
 
 async function conectDB(){
@@ -18,15 +19,11 @@ async function conectDB(){
 conectDB()
 
 
-
-
-
-
 const server=express();
 
 server.use(express.json())
 
-
+server.use('/api/',authRouters)
 server.use('/api/user',routerUser)
 server.use('/api/role', routerRole)
 server.use('/api/tipo_dni', routerTipo_Dni)
