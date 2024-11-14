@@ -1,35 +1,42 @@
 
 import { db2 } from "../config/db";
+import { QueryTypes } from "sequelize";
+
+interface Factura {
+  factura_id: number;
+  monto_factura: number;
+  fechas: Date;
+  nombre_cliente: string;
+  tipo_pago: string;
+}
 
 export const obtenerVentasPorMes = async (req, res) => {
   try {
-    const { mes } = req.params; // Mes que se pasa por parámetro
+    const { mes } = req.body;
 
-    // Validamos que mes esté entre 1 y 12
-    const mesNum = parseInt(mes);
-    if (mesNum < 1 || mesNum > 12) {
+    const mesNum = parseInt(mes, 10);
+    if (isNaN(mesNum) || mesNum < 1 || mesNum > 12) {
       return res.status(400).json({ error: "Mes inválido. Debe estar entre 1 y 12." });
     }
 
-    const ventas = await db2.query(
+    const ventas: Factura[] = await db2.query(
       `
-      SELECT * FROM (
-        SELECT 
-          facturas.id_factura,
-          facturas.fecha_venta,
-          clientes.nombre,
-          clientes.apellido,
-          MONTH(facturas.fecha_venta) AS meses
-        FROM 
-          facturas
-        INNER JOIN 
-          clientes ON clientes.id_cliente = facturas.id_cliente
-      ) AS auxiliar 
-      WHERE auxiliar.meses = :mes;
+      SELECT 
+        f.factura_id, 
+        f.total AS monto_factura,
+        f.fecha_venta AS fechas, 
+        CONCAT(c.nombre, " ", c.apellido) AS nombre_cliente, 
+        f.tipo_pago 
+      FROM 
+        factura f 
+      JOIN 
+        cliente c ON f.cliente_id = c.cliente_id 
+      WHERE 
+        MONTH(f.fecha_venta) = :mes;
       `,
       {
-        replacements: { mes: mesNum }, // Inyectar el mes proporcionado como número
-        type: db2.QueryTypes.SELECT
+        replacements: { mes: mesNum },
+        type: QueryTypes.SELECT,
       }
     );
 
@@ -39,7 +46,3 @@ export const obtenerVentasPorMes = async (req, res) => {
     return res.status(500).json({ error: "Error al obtener las ventas." });
   }
 };
-
-
-
-
