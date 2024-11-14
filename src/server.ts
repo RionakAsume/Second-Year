@@ -56,8 +56,5 @@ server.use("/api/tipo_dni", routerTipo_Dni);
 server.use("/api/facturas", routerFacturas);
 server.use("/api/clientes", routerCliente);
 
-server.listen(3000, () => {
-  console.log("Servidor iniciado en el puerto 3000");
-});
 
 export default server;

@@ -19,7 +19,7 @@ export const getClientesPorSucursal = async (req, res) => {
       `
       SELECT 
         c.cliente_id, 
-        CONCAT(c.nombre, " ", c.apellido) AS "nombre y apellido", 
+        CONCAT(c.nombre, " ", c.apellido) AS "nombre_apellido", 
         s.nombre AS sucursal, 
         c.sucursal_id 
       FROM 
@@ -85,14 +85,14 @@ export const getClientesMontoSuperior = async (req, res) => {
       const resultados = await db2.query(
         `
         SELECT 
-          CONCAT(c.nombre, " ", c.apellido) AS "nombre y apellido", 
+          CONCAT(c.nombre, " ", c.apellido) AS "nombre_apellido", 
           SUM(f.total) AS total_ventas_semestrales 
         FROM 
           cliente c 
         JOIN 
           factura f ON c.cliente_id = f.cliente_id 
         WHERE 
-          f.fecha_venta BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW() 
+          f.fecha_venta BETWEEN DATE_SUB(NOW(), INTERVAL 6 MONTH) AND NOW() 
         GROUP BY 
           c.cliente_id, c.nombre 
         HAVING 
