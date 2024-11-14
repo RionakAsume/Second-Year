@@ -2,6 +2,11 @@ import express from "express";
 import routerUser from "./routers/user";
 import routerRole from "./routers/role";
 import routerTipo_Dni from "./routers/tipo_dni";
+import routerFacturas from "./routers/facturas";
+import routerCliente from "./routers/clientes";
+
+
+
 import authRouters from "./routers/auth.router";
 import { db, db2 } from "./config/db"; // Importa db y db2
 import cookieParser from "cookie-parser";
@@ -48,6 +53,8 @@ server.use("/api/", authRouters);
 server.use("/api/user", routerUser);
 server.use("/api/role", routerRole);
 server.use("/api/tipo_dni", routerTipo_Dni);
+server.use("/api/facturas", routerFacturas);
+server.use("/api/clientes", routerCliente);
 
 server.listen(3000, () => {
   console.log("Servidor iniciado en el puerto 3000");
