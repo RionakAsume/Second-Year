@@ -9,7 +9,7 @@ export const registerSchema = z.object({
     dni: z.number({ required_error: 'El DNI es requerido' }),
     email: z.string({ required_error: 'email es requerido' }).email('formato de email no valido'),
     tipo_dni: z.number({ required_error: 'El tipo dni es requerido' }),
-    roleId: z.number({ required_error: 'El rol es requerido' })
+
 })
  
 export const loginSchema = z.object({

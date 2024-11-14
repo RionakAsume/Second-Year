@@ -63,6 +63,7 @@ class User extends Model {
     @AllowNull(false)
     @Column({
         type: DataType.INTEGER,
+        defaultValue: 2,
     })
     roleId!: number;
 

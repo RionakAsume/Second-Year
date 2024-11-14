@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.models";
 
 export const register = async (req, res) => {
-    const { full_name, surname, password, address, phone, dni, email, tipo_dni, roleId } =
+    const { full_name, surname, password, address, phone, dni, email, tipo_dni } =
         req.body;
 
     try {
@@ -29,20 +29,20 @@ export const register = async (req, res) => {
             dni,
             email,
             tipo_dni,
-            roleId,
+         
         });
         const userSaved = await newUser.save();
 
 
-        // jwt.sign({
-        //     id: userSaved.id,
-        // }, process.env.TOKEN_SECRET, {
-        //     expiresIn: "1d",
-        // }, (err, token) => {
-        //     if (err) console.log(err);
-        //     res.cookie('token', token);
+       jwt.sign({
+            id: userSaved.id,
+        }, process.env.TOKEN_SECRET, {
+          expiresIn: "1d",
+         }, (err, token) => {
+             if (err) console.log(err);
+           res.cookie('token', token);
         res.send(userSaved);
-        // });
+        });
 
     } catch (error) {
         console.log(error);
